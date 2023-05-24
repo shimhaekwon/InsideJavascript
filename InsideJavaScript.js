@@ -18,90 +18,90 @@ const showDateTime = function(){
 ///// common fuction
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-console.log('442 호출 패턴과 this 바인딩');
-//////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('442 호출 패턴과 this 바인딩');
+// //////////////////////////////////////////////////////////////////////////////////////////////
 
-////// javascript -- 내부 함수 호출 패턴을 정의해놓지 않는다.
-//////////////////////////////////////////////////////////////////////////////////////////////
-var value = 100;
+// ////// javascript -- 내부 함수 호출 패턴을 정의해놓지 않는다.
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// var value = 100;
 
-var myObject = {
-    value:1,
-    func1:function(){
-        this.value += 1;
-        showDateTime();
-        console.log('myObject-func1() called. this : ', this);
-        console.log('myObject-func1() called. this.value : ', this.value);
+// var myObject = {
+//     value:1,
+//     func1:function(){
+//         this.value += 1;
+//         showDateTime();
+//         console.log('myObject-func1() called. this : ', this);
+//         console.log('myObject-func1() called. this.value : ', this.value);
 
-        func2 = function(){
-            this.value += 1;
-            showDateTime();
-            console.log('myObject-func2() called. this : ', this);
-            console.log('myObject-func2() called. this.value : ', this.value);
+//         func2 = function(){
+//             this.value += 1;
+//             showDateTime();
+//             console.log('myObject-func2() called. this : ', this);
+//             console.log('myObject-func2() called. this.value : ', this.value);
 
-            func3 = function(){
-                this.value += 1;
-                showDateTime();
-                console.log('myObject-func3() called. this : ', this);
-                console.log('myObject-func3() called. this.value : ', this.value);
+//             func3 = function(){
+//                 this.value += 1;
+//                 showDateTime();
+//                 console.log('myObject-func3() called. this : ', this);
+//                 console.log('myObject-func3() called. this.value : ', this.value);
     
-            }
-            func3();
-        }
-        func2();
-    }
-};
-myObject.func1();
-/*
-2,3,4 가 예상되었는데
-2, 101, 102 가 리턴됨.
+//             }
+//             func3();
+//         }
+//         func2();
+//     }
+// };
+// myObject.func1();
+// /*
+// 2,3,4 가 예상되었는데
+// 2, 101, 102 가 리턴됨.
 
-결국 func2(), func3() 가 보는 value 는 
-  myObject.value:1 이 아니라
-  var value=100; >> window.value 임.
-*/
-//////////////////////////////////////////////////////////////////////////////////////////////
-//// >>>>>  2, 3, 4 가 리턴되게 하려면??
-//////////////////////////////////////////////////////////////////////////////////////////////
-console.log('=========================================================================================================');
-console.log("it's over myObject()");
-console.log('=========================================================================================================');
-var value2 = 200;
-var myObject2 ={
-    value2:1,
-    func1 : function(){
-        var that = this;
-        showDateTime();
-        console.log('myObject2-func1() called. this : ', this);
-        console.log('myObject2-func2() called. that : ', that);
+// 결국 func2(), func3() 가 보는 value 는 
+//   myObject.value:1 이 아니라    var value=100; 
+//   >> window.value 임.
+// */
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// //// >>>>>  2, 3, 4 가 리턴되게 하려면??
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('=========================================================================================================');
+// console.log("it's over myObject()");
+// console.log('=========================================================================================================');
+// var value2 = 200;
+// var myObject2 ={
+//     value2:1,
+//     func1 : function(){
+//         var that = this;
+//         showDateTime();
+//         console.log('myObject2-func1() called. this : ', this);
+//         console.log('myObject2-func2() called. that : ', that);
 
-        this.value2 += 1;
-        console.log('myObject2-func1() called. this.value2 : ', this.value2);
+//         this.value2 += 1;
+//         console.log('myObject2-func1() called. this.value2 : ', this.value2);
 
-        var func2 = function(){
-            showDateTime();
-            console.log('myObject2-func2() called. this : ', this);
-            console.log('myObject2-func2() called. that : ', that);
-            that.value2 += 1;
-            console.log('myObject2-func2() called. this.value2 : ', this.value2);
-            console.log('myObject2-func2() called. that.value2 : ', that.value2);
+//         var func2 = function(){
+//             showDateTime();
+//             console.log('myObject2-func2() called. this : ', this);
+//             console.log('myObject2-func2() called. that : ', that);
+//             that.value2 += 1;
+//             console.log('myObject2-func2() called. this.value2 : ', this.value2);
+//             console.log('myObject2-func2() called. that.value2 : ', that.value2);
 
-            var func3 = function(){ 
-                showDateTime();
-                console.log('myObject2-func3() called. this : ', this);
-                console.log('myObject2-func3() called. that : ', that);                   
-                that.value2 += 1;
-                console.log('myObject2-func3() called. this.value2 : ', this.value2);
-                console.log('myObject2-func3() called. that.value2 : ', that.value2);
-            }
-            func3();
-        }
-        func2();
-    }
-}
-myObject2.func1();
-//////////////////////////////////////////////////////////////////////////////////////////////
+//             var func3 = function(){ 
+//                 showDateTime();
+//                 console.log('myObject2-func3() called. this : ', this);
+//                 console.log('myObject2-func3() called. that : ', that);                   
+//                 that.value2 += 1;
+//                 console.log('myObject2-func3() called. this.value2 : ', this.value2);
+//                 console.log('myObject2-func3() called. that.value2 : ', that.value2);
+//             }
+//             func3();
+//         }
+//         func2();
+//     }
+// }
+// myObject2.func1();
+// //////////////////////////////////////////////////////////////////////////////////////////////
 
 // //////////////////////////////////////////////////////////////////////////////////////////////
 // const myObject = {
