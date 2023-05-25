@@ -17,6 +17,321 @@ const showDateTime = function(){
 }
 ///// common fuction
 //////////////////////////////////////////////////////////////////////////////////////////////
+// javascript is prototype based object oriented programming.
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+console.log("459 객체의 프로퍼티 읽기나 메서드를 실행할 때만 프로토타입 체이닝이 동작한다.");
+//////////////////////////////////////////////////////////////////////////////////////////////
+function Person(name){
+    if(!(this instanceof arguments.callee)){
+        return Person(name);
+    }
+    this.name = name;
+};
+
+Person.prototype.country = 'Korea';
+
+var foo = new Person('foo');
+var bar = new Person('bar');
+
+console.log(foo.country);
+console.log(bar.country);
+
+foo.country = 'USA';
+
+console.log(foo.country);
+console.log(bar.country);
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("default prototype 은 다른 객체로 변경이 가능하다.");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// function Person(name){
+//     if(!(this instanceof arguments.callee)){
+//         return Person(name);
+//     }
+//     this.name = name;
+// }
+// console.log(Person.prototype.constructor);
+
+// var foo = new Person('foo');
+// console.log(foo.country);
+
+// Person.prototype = {
+//     country : 'korea'
+// };
+// console.log(Person.prototype.constructor);
+
+// var bar = new Person('bar');
+// console.log(foo.country);
+// console.log(bar.country);
+// console.log(foo.constructor);
+// console.log(bar.constructor);
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("457 프로토타입 메서드와 this 바인딩.")
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// function Person(name){
+//     this.name = name;
+// }
+
+// Person.prototype.getName = function(){
+//     return this.name;
+// }
+
+// var foo = new Person('foo');
+
+// console.log(foo.getName());
+
+// Person.prototype.name = 'person';
+
+// console.log(Person.prototype.getName());
+// console.log(foo.getName());
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("456 프로토타입도 자바스크립트 객체.");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// try {
+
+//     function Person(name){
+//         this.name = name;
+//     }
+    
+//     var foo = new Person('foo');
+  
+//     foo.sayHello();
+
+// } catch(error){
+//     console.log(error);
+        
+//     Person.prototype.sayHello = function(){
+//         console.log('Hello! ' +  this.name );
+//     }
+
+//     foo.sayHello();
+// }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("452 객체 리터럴 방식으로 생성된 객체의 프로토타입 체이닝");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// var myObject = {
+//     name : 'foo',
+//     sayName : function(){
+//         console.log('My name is ' + this.name);
+//     }
+// }
+
+// console.dir(myObject);
+// myObject.sayName();
+// console.log(myObject.hasOwnProperty('name'));
+// console.log(myObject.hasOwnProperty('nickname'));
+// myObject.sayNickName();
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('sample 437 prototype chaining');
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// function Person(name){
+//     if(!(this instanceof arguments.callee)){
+//         return Person(name);
+//     }
+//     this.name = name;
+// }
+
+// var foo = new Person('foo');
+// console.dir(Person);
+// console.dir(foo);
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('4432 생성자 함수에서 리턴값을 지정하지 않을 경우 생성된 객체가 리턴된다');
+// // boolean, number, string 등을 return 하면 리턴값을 무시하고 this로 바인딩된 객체가 리턴됨.
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// const Person = function(name, age, gender){
+//     if(!(this instanceof arguments.callee)){
+//         return new Person(name, age, gender);
+//     }
+//     this.name = name
+//     this.age = age;
+//     this.gender = gender;
+//     //return {name:'bar', age:20, gender:'female'};
+//     return 100;
+// };
+// var foo = new Person('foo', 30, 'male');
+// console.dir(foo);
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('443 함수 리턴');
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// var noReturn = function (){
+//     console.log('This function has no return statement.');
+// };
+
+// var result = noReturn();    
+// console.log(result);        // undefined
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log( 'apply 를 사용하여 배열 method를 적용하기');
+// function myFuction(){
+//     console.log('1st log:');
+//     console.dir(arguments);
+
+//     // arguments.shift();      /// 에러
+
+//     var args = Array.prototype.slice.apply(arguments);
+//     console.log('2nd log:');
+//     console.dir(args);
+// }
+
+// myFuction(1,2,3);
+
+// // slice() method 확인
+// var arrA = [1,2,3,4];
+// console.log('[1,2,3,4]:',arrA);
+// var arrB = arrA.slice(0);
+// console.log('[1,2,3,4].slice(0):',arrB);
+// var arrC = arrA.slice();
+// console.log('[1,2,3,4].slice():',arrC);
+// var arrD = arrA.slice(1);
+// console.log('[1,2,3,4].slice(1):',arrD);
+// var arrE = arrA.slice(1,2);
+// console.log('[1,2,3,4].slice(1,2):',arrE);
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('call appy 메서드를 사용한 명시적인 binding');
+// // Function.prototype 객체의 메서드.
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// // function.apply(thisArg, argArry);//
+// function Person(name, age, gender){
+//     this.name = name;
+//     this.age = age;
+//     this.gender = gender;
+// }
+
+// var foo = {};
+// console.log('foo 0:',foo);
+// Person.apply(foo, ['foo',30,'male']);   // apply : arguments를 배열 형태로
+// console.log('foo 1:',foo);
+// Person.call(foo, 'poo', 25, 'female');  // call : arguments를 각각 ....
+// console.log('foo 2:',foo);
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log('sample 429 객체 생성 두 가지 방법');
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// const Person = function(name, age, gender, position){
+//     this.name = name;
+//     this.age = age;
+//     this.gender = gender;    
+// }
+
+// var bar = new Person('bar', 33, 'female');
+// console.log('bar=',bar);
+
+// var baz = new Person('baz', 25, 'male');
+// console.log('baz=',baz);
+
+// var foo = {
+//     name:'foo',
+//     age:31,
+//     gender:'male'
+// };
+// console.log('foo=',foo);
+
+// var ant = Person('ant', 25, 'male');
+// console.log('ant=',ant);    // undefined
+// console.log('window.name=',window.name);   // ant
+// console.log('window.age=',window.age);    // 25
+// console.log('window.gender=',window.gender); // male   
+// // new 없이 일반 함수 형태로 호출하는 경우 this는 함수 호출이므로 전역객체인 window 객체로 바인딩됨.
+
+// // new 없이 일반 함수 형태로 호출해도 함수로 바인딩되게 하려면??
+
+// const A = function(arg1, arg2){
+//     if(!(this instanceof A)){
+//         return new A(arg1, arg2);
+//     }
+//     this.value1 = arg1 ? arg1 : 0;
+//     this.value2 = arg2 ? arg2 : 0;
+// };
+// var a = new A(100,200);
+// var b = A(300,400);
+// console.log('a=',a);
+// console.log('b=',b);
+
+// const B = function(arg1, arg2){
+//     if(!(this instanceof arguments.callee)){
+//         return new B(arg1, arg2);
+//     }
+//     this.value1 = arg1 ? arg1 : 0;
+//     this.value2 = arg2 ? arg2 : 0;
+// };
+// var aa = new B(1,2);
+// console.log('aa=',aa);
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("4423 생성자 함수");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// const Person = function(name){
+//     this.name = name;    
+// }
+
+// var foo = new Person("foo~~~~");
+// console.log('foo.name=',foo.name);
+
+
+// const Animal = function(name,count){
+//     this.name = name;
+//     this.count = count;
+//     console.log('Animal.count=',this.count)
+//     var countAdd = function(){
+//         console.log('Animal.countAdd=',this.count)
+//         this.count ++;
+//         console.log('Animal.countAdd++ =',this.count)
+//         var countAdd2 = function(){
+//             console.log('Animal.countAdd2=',this.count)
+//             this.count ++;
+//             console.log('Animal.countAdd2++ =',this.count)
+//         }
+//         countAdd2();
+//     }
+//     countAdd();
+// }
+
+// var bear = new Animal('bear', 1);
+// console.log(bear);
+// //////////////////////////////////////////////////////////////////////////////////////////////
 
 // //////////////////////////////////////////////////////////////////////////////////////////////
 // console.log('442 호출 패턴과 this 바인딩');
