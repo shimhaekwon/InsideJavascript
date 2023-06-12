@@ -22,6 +22,9 @@
 		
 			function loadPlayer() {
 				var videoID = videoIDAll;
+				if ( (videoID===undefined) || (videoID===null) || (videoID==='') ){
+					videoID = 'oQIK6bQT7GE&t';
+				}
 				var atts = { id: "ytPlayer" };
 				swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=ytplayer", 
 								   "videoDiv", "640", "385", "8", null, null, {allowScriptAccess: 'always'},atts);
