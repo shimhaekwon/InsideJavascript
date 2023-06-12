@@ -1,0 +1,32 @@
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Recognition</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+  <script src="./imageRead.js"></script>
+</head>
+<body>
+  <input type="file" id="uploadInput" accept="image/*" />
+  <img id="imageElement" />
+  <button onclick="recognizeImage()">Recognize</button>
+  <div id="predictions"></div>
+</body>
+</html-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Recognition</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.12.0"></script>
+</head>
+<body>
+  <input type="file" id="imageInput" accept="image/*">
+  <img id="imagePreview" src="#" alt="Selected Image" width="300">
+  <button id="predictButton">Predict</button>
+  <div id="predictionResult"></div>
+
+  <script src="imageRead.js"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@ const showDateTime = function(){
 
     console.log('=========================================================================================================');
     console.log('현재 시간:', year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second + '.' + millisecond);
-}
+};
 ///// common fuction
 //////////////////////////////////////////////////////////////////////////////////////////////
 // javascript is prototype based object oriented programming.
@@ -22,17 +22,86 @@ const showDateTime = function(){
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-console.log("5.4 closure");
+console.log("5.4.2.1 특정함수에 사용자가 정의한 객체의 메서드 연결하기");
+console.log("예제 5-9");
 //////////////////////////////////////////////////////////////////////////////////////////////
-function outF(){
-    var x = 10;
-    var inF = function(){console.log("outF().inF().x=",x);}
-    console.log("outF().inF=",inF)
-    return inF;
+function HelloFunc(func){
+    this.greeting = "hello";
+    console.log("HelloFunc(func) - this.greeting=",this.greeting);
+    if(!(this instanceof arguments.callee)){
+        return HelloFunc(func);
+    }    
 }
-var inner = outF();
-inner();
+
+HelloFunc.prototype.testMethod = function(){
+    console.log("HelloFunc.prototype.testMethod()=",this.greeting);
+}
+
+HelloFunc.prototype.call = function(func){
+    func ? func(this.greeting) : this.func(this.greeting);
+}
+
+var userFunc = function(greeting){
+    console.log(greeting);
+}
+
+var objHello = new HelloFunc();
+objHello.func = userFunc;
+objHello.call();
+
+console.log('-----------------------------');
+
+function saySomething(obj, methodName, name){
+    return (function(greeting){
+        return obj[methodName](greeting,name)
+    });
+}
+
+function newObj(obj, name){
+    obj.func = saySomething(this, "who", name);
+    return obj;
+}
+
+newObj.prototype.who = function(greeting, name){
+    console.log(greeting + " " + (name || "everyone"));
+}
+
+var obj1 = new newObj(objHello, "zzoon");
+obj1.call();
 //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("sample 5-8");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// function outerFunc(arg1, arg2){
+//     var local = 8;
+//     console.log("outerFunc() - local=",local);
+//     console.log("outerFunc() - arg1=",arg1,", arg2=",arg2);
+//     function innerFunc(innerArg){
+//         console.log("innerFunc() - local=",local);
+//         console.log("innerFunc() - innerArg=",innerArg);
+//         console.log( (arg1+arg2) / (innerArg + local) );
+//     };
+//     return innerFunc;
+// };
+// var exam1 = outerFunc(2,4);
+// console.log('-----------------------------');
+// exam1(0);
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("5.4 closure");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// function outF(){
+//     var x = 10;
+//     var inF = function(){console.log("outF().inF().x=",x);}
+//     console.log("outF().inF=",inF)
+//     return inF;
+// }
+// var inner = outF();
+// inner();
+// //////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -40,31 +109,214 @@ inner();
 chat gpt 가 아래 두 함수에 대해 설명함.
 두 코드 샘플은 val이라는 변수를 사용하는 방식에서 차이가 있습니다.
 
+Sample 1에서는 val 변수를 함수 내에서 선언하지 않고 외부에서 선언한 후 사용합니다. 따라서 함수 내에서 val을 참조할 때, 외부에서 정의한 값인 1을 참조하게 됩니다. 출력 결과는 "aa().val= 1"이 됩니다.
+
+반면, Sample 2에서는 val 변수를 함수 내에서 선언하고 값을 2로 할당합니다. 이 경우 함수 내에서 선언한 val 변수는 외부에서 정의한 val 변수와는 별개의 변수가 됩니다. 따라서 함수 내에서 val을 참조할 때, 함수 내에서 정의한 값인 2를 참조하게 됩니다. 출력 결과는 "aa().val= undefined"이 됩니다. 이는 함수 내에서 console.log 문 이후에 var val = 2; 선언문이 있지만, 초기화되기 전에 console.log가 실행되었기 때문입니다.
+
+따라서 Sample 1에서는 외부에서 선언한 val 변수를 참조하고, Sample 2에서는 함수 내에서 선언한 val 변수를 참조한다는 차이가 있습니다.
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////
+// const val = 1;
+// const aa = function(){
+//     this.name = 'aa';
+//     console.log("aa().val=",val);
+// };
+// aa();
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// const val = 1;
+// const aa = function(){
+//     this.name = 'aa';
+//     console.log("aa().val=",val);
+//     var val = 2;
+// };
+// aa();
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("자바스크립트 - 호이스팅 : var 선언+할당 문은 스코프 내 최상위에서 선언하고, 할당은 뒤에 함.");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// foo();
+// bar();
+
+// var foo = function(){
+//     console.log("foo and x = ", x);
+// }
+
+// function bar(){
+//     console.log("bar and x = ", x);    
+// }
+
+// var x = 1;
+
+/*
+after hoisting
+
+var foo;
+
+function bar() {
+    console.log("foo and x = ", x);
+}
+
+var x;
+
+foo(); // TypeError
+bar();
+
+foo = function(){
+    console.log("foo and x = ", x);
+}
+
+x = 1;
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-console.log("459 객체의 프로퍼티 읽기나 메서드를 실행할 때만 프로토타입 체이닝이 동작한다.");
+/*
+실행 컨텍스트와 클로져
+실행 컨텍스트, 변수의 유효범위, 클로져.
+1. 실행 컨택스트 : Execution context : 실행 가능한 코드를 형상화하고 구분하는 추상적인 개념. 실행 가능한 자바스크립트 코드 블록이 실행되는 환경
+2. 활성객체와 변수객체 : Activation object / Variable object
+3. 스코프 체인 : scope chain
+4. 클로져 : closure
+*/
 //////////////////////////////////////////////////////////////////////////////////////////////
-function Person(name){
-    if(!(this instanceof arguments.callee)){
-        return Person(name);
-    }
-    this.name = name;
-};
+// const val = 1;
+// const aa = function(){
+//     this.name = 'aa';
+    
+//     console.log(this);
+//     console.log("aa().this.val=",this.val);
+// };
+// aa();
 
-Person.prototype.country = 'Korea';
+// const bb = function(){
+//     //console.log(this);
+//     console.log("bb().this.val=",this.val);
+//     console.log("bb().val=",val);
+//     this.name = 'bb';
+//     this.val = 2;
+//     var val = 2;
+//     console.log("bb().this.val 2nd=",this.val);
+//     console.log("bb().val 2nd=",val);
+// };
+// bb();
 
-var foo = new Person('foo');
-var bar = new Person('bar');
+// const cc = function(){
+//     this.name = 'cc';
+//     this.val = 3;
+//     var val = 3;
+//     console.log(this);
+//     console.log("cc().val=",val);
+//     console.log("cc().this.val=",this.val);
+// };
+// cc();
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// const val = 1;
+// const aa = function(){
+//     console.log("aa().val=",val);
+// };
+// aa();
 
-console.log(foo.country);
-console.log(bar.country);
+// const bb = function(){
+//     console.log("bb().val=",val);
+//     var val = 2;
+//     console.log("bb().val 2nd=",val);
+// };
+// bb();
 
-foo.country = 'USA';
+// const cc = function(){
+//     var val = 2;
+//     console.log("cc().val=",val);
+// };
+// cc();
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("5.3.2 함수를 호출한 경우 생성되는 실행 컨텍스트의 스코프 체인");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("example 5-5");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// var value = 1;
 
-console.log(foo.country);
-console.log(bar.country);
+// const printFunc = function(){
+//     console.log("printFunc() value=",value);
+//     // printFunc() value= undefined
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+//     var value = 2;
+//     console.log("printFunc().this=",this);
+//     console.dir(this);
+
+//     const printValue = function(){
+//         console.log("printValue() value=",value);
+//         // printValue() value= 2
+
+//         console.log("printFunc().printValue().this=",this);
+//         console.dir(this);
+//         // printValue() value= 2
+
+//         return value;
+//     };
+//     console.log("printValue()=",printValue());
+//     // printValue()= 2
+// }
+// printFunc();
+// console.log("------------------------------------------")
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("example 5-6");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// var value2 = 1;
+// console.log("window value2=",value2);
+
+// const printValue2 = function(){
+//     console.log("printValue2() value2=",value2)
+    
+//     return value2;
+// }
+
+// const printFunc2 = function(func){
+//     var value2 = 2;
+//     console.log("printFunc2() value2=",value2);
+//     console.log("printFunc2() func()=",func());
+// }
+
+// printFunc2(printValue2);
+
+// ///// 실행결과
+// /*
+// window value2= 1
+// printFunc2() value2= 2
+// printValue2() value2= 1
+// PrintFunc2() func()= 1
+// */
+// //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// console.log("459 객체의 프로퍼티 읽기나 메서드를 실행할 때만 프로토타입 체이닝이 동작한다.");
+// //////////////////////////////////////////////////////////////////////////////////////////////
+// function Person(name){
+//     if(!(this instanceof arguments.callee)){
+//         return Person(name);
+//     }
+//     this.name = name;
+// };
+
+// Person.prototype.country = 'Korea';
+
+// var foo = new Person('foo');
+// var bar = new Person('bar');
+
+// console.log(foo.country);
+// console.log(bar.country);
+
+// foo.country = 'USA';
+
+// console.log(foo.country);
+// console.log(bar.country);
+
+// //////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

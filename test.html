@@ -1,0 +1,75 @@
+<html>
+    <head>
+
+    </head>
+
+    <body>
+
+		<script type=text/javascript src="http://www.google.com/jsapi"></script> 
+
+		<script type="text/javascript">
+			google.load("swfobject", "2.1");
+			var videoIDAll = "";
+			
+			function onPlayerError(errorCode){
+				alert("An error occured of type:" + errorCode);
+			}
+		
+			function onYouTubePlayerReady(playerId) {
+				ytplayer = document.getElementById("ytPlayer");
+				ytplayer.addEventListener("onError", "onPlayerError");
+			}
+		
+			function loadPlayer() {
+				var videoID = videoIDAll;
+				var atts = { id: "ytPlayer" };
+				swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=ytplayer", 
+								   "videoDiv", "640", "385", "8", null, null, {allowScriptAccess: 'always'},atts);
+			}
+			
+			function _run() {
+				loadPlayer();
+			}
+			
+			google.setOnLoadCallback(_run);
+			
+			function showMyVideos(json) {
+				var items = json.data.items || [];
+				var html = [''];
+				for (var i = 0; i < items.length; i++) {
+					var title = json.data.items[i].title;
+					var thumbnailUrl = json.data.items[i].thumbnail.sqDefault;
+					var videoID = json.data.items[i].id;
+					if(i==0){
+						videoIDAll = videoID;
+					}
+					html.push('<div class="grid"><div class="imgholder">');
+					html.push('<a href="javascript:ytplayer.loadVideoById(\''+videoID+'\')">');
+					html.push('<img src="',thumbnailUrl,'" width="180" height="180"></a></div>');
+					html.push('<div class="chnlname"><a href="http://apsun.net/eastbeat/index4.html"></a></div>');
+					html.push('<div class="subject">',typeSize(title),'</div></div>');
+				}
+				document.getElementById('videolist').innerHTML = html.join('');
+			}
+			
+			function typeSize(data){
+				if(data.length > 17){
+					data = data.substr(0, 17)+"...";
+				}
+				return data;
+			}
+		</script> 
+		
+		<section id="wrapper">
+			<div style="text-align: center;">
+				<div id=videoDiv >Loading...</div>
+			</div>
+			
+			<div id="container_main">
+				<div id=videolist></div>
+			</div>
+		</section>
+		
+		<script type="text/javascript" src="http://gdata.youtube.com/feeds/api/videos?q=${search}&max-results=10&alt=jsonc&v=2&callback=showMyVideos"></script>
+    </body>
+</html>

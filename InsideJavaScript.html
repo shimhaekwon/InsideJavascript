@@ -6,7 +6,18 @@
   </head>
   <body>
     <!-- 문서 내용 -->
-    <pre id="tagPre"></pre>
+<pre id="tagPre" class="tagPre">
+
+function outF(){
+  var x = 10;
+  var inF = function(){console.log("outF().inF().x=",x);}
+  console.log("outF().inF=",inF)
+  return inF;
+}
+var inner = outF();
+inner();
+
+</pre>
     <script type="text/javascript" src="InsideJavaScript.js"></script>
     <div>
       <input type="button" id="button" value="BUTTON"/>

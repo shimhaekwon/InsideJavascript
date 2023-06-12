@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TensorFlow.js Image Recognition</title>
+</head>
+<body>
+  <input type="file" id="image" accept="image/*">
+  <button onclick="loadImage()">Load Image</button>
+  <div id="result"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+  <script>
+    async function loadImage() {
+        var model = await tf.loadGraphModel("https://tfhub.dev/tensorflow/resnet_v1_50/classification/1/model.json");
+      var image = document.getElementById("image");
+      var file = image.files[0];
+      var reader = new FileReader();
+      reader.onload = function(event) {
+        var img = document.createElement("img");
+        img.src = event.target.result;
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var width = canvas.width;
+        var height = canvas.height;
+        var imageData = ctx.getImageData(0, 0, width, height);
+
+        // Create a TensorFlow.js tensor from the image data.
+        //var tensor = tf.fromPixels(imageData);
+        var tensor = tf.browser.fromPixels(imageData);
+
+        // Load the pre-trained image classification model.
+        //var model = tf.loadModel("https://tfhub.dev/tensorflow/resnet_v1_50/classification/1");
+
+
+        // Classify the image.
+        var predictions = model.predict(tensor);
+
+        // Get the top prediction.
+        var topPrediction = predictions.dataSync()[0];
+
+        // Display the top prediction.
+        document.getElementById("result").innerHTML = topPrediction.className;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
