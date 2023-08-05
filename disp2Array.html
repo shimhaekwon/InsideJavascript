@@ -1,0 +1,22 @@
+<script type="text/javascript">
+function displayArrays(arrA, arrB) {
+  let counterA = 0;
+  let counterB = 0;
+
+  while (counterA < arrA.length || counterB < arrB.length) {
+    if (counterA < arrA.length) {
+      console.log(arrA[counterA]);
+      counterA++;
+    }
+
+    if (counterA % 3 === 0 && counterB < arrB.length) {
+      console.log(arrB[counterB]);
+      counterB++;
+    }
+  }
+}
+
+let arrayA = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let arrayB = ['a', 'b', 'c', 'd', 'e', 'f'];
+displayArrays(arrayA, arrayB);
+</script>
